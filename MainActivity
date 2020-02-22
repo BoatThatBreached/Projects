@@ -1,0 +1,22 @@
+package com.example.httpthing.view;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ListView;
+import com.example.httpthing.R;
+import com.example.httpthing.interactor.UserInteractor;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //TextView userNameTextView = findViewById(R.id.userNameTextView);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        new UserInteractor(listView, this).getUsers();
+
+    }
+
+}
