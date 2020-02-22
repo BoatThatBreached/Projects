@@ -1,0 +1,43 @@
+package com.example.httpthing.interactor;
+
+import android.os.AsyncTask;
+import android.util.Log;
+
+
+import com.example.httpthing.domain.User;
+import com.example.httpthing.repository.JsonPlaceholderParser;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class UserTask extends AsyncTask<ArrayList<User>, ArrayList<User>, ArrayList<User>> {
+    JsonPlaceholderParser parser;
+    UserResponse userResponse;
+
+    public UserTask(JsonPlaceholderParser parser, UserResponse userResponse) {
+        this.parser = parser;
+        this.userResponse = userResponse;
+    }
+
+    @Override
+    protected ArrayList<User> doInBackground(ArrayList<User>... arrayLists) {
+        try {
+
+            //Log.d("USERS", "JAVA USER: " + user.toString());
+            return parser.getUsersList(10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("USERS", "Ошибка  " + e.getMessage());
+            return new ArrayList<User>();
+        }
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<User> users) {
+        super.onPostExecute(users);
+        userResponse.reponse(users);
+    }
+
+}
