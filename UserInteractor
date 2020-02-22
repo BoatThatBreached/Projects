@@ -1,0 +1,48 @@
+package com.example.httpthing.interactor;
+
+import android.content.Context;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+
+import com.example.httpthing.domain.User;
+import com.example.httpthing.repository.JsonPlaceholderParser;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class UserInteractor implements UserResponse {
+
+    JsonPlaceholderParser parser = new JsonPlaceholderParser();
+    ListView listView;
+    Context context;
+
+    public UserInteractor(ListView listView, Context context) {
+        this.listView = listView;
+        this.context = context;
+    }
+
+    public void getUsers() {
+        new UserTask(parser, this).execute();
+    }
+
+    @Override
+    public void reponse(ArrayList<User> users) {
+        //System.out.println("Пользователь в главном потоке " + user);
+        //textView.setText(textView.getText().toString() + user.name);
+
+        ArrayList<String> userNames = new ArrayList<>();
+        for(int i = 0; i<users.size(); i++){
+            userNames.add(users.get(i).name);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, userNames);
+        listView.setAdapter(adapter);
+    }
+}
+interface UserResponse {
+    void reponse(ArrayList<User> users);
+}
